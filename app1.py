@@ -1,18 +1,54 @@
-from flask import Flask, render_template, request, jsonify
-from waitress import serve
+from flask import Flask,redirect,url_for,render_template,request
+from os import sys
+
 app = Flask(__name__)
 
-# Endpoint to handle user messages
-@app.route('/chat', methods=['POST'])
-def chat():
-    user_message = request.json.get('message')
+
+@app.route('/')
+def welcome():
+    return render_template('index.html')
+
+
+@app.route('/out/<int:score>')
+def out(score):
+
+    res = ''
+    if score == 1:
+        res = 'out'
+
+    return render_template('result.html',result =res)
+
+@app.route('/notout/<int:score>')
+def notout(score):
+    resa = ''
+    if score == 0:
+        resa = 'not out'
+
+    return render_template('result.html',result =resa)
+
+@app.route('/decision/<int:a>')
+
+
+@app.route('/submit', methods = ['POST','GET'])
+def submit():
+    resu = ''
+    resul=''
+    if request.method == 'POST':
+        resu = int(request.form['res'])
+        
+    if resu == 0:
+        resul = 'notout'
+    elif resu == 1:
+        resul = 'out'
+        
     
-    # Here you would typically call your chat logic or AI model.
-    # For now, let's send a simple response back
-    bot_response = "Thank you for your query. We will assist you with ticketing information shortly."
-    
-    return jsonify({'message': bot_response})
+    return redirect(url_for(resul,score=resu))
+            
+
+
+
+
+
 
 if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=505100, threads=2)
-    
+    app.run(debug=True)
