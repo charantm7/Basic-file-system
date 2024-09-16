@@ -23,7 +23,6 @@ def notout(score):
     resa = ''
     if score == 0:
         resa = 'not out'
-
     return render_template('result.html',result =resa)
 
 @app.route('/decision/<int:a>')
@@ -44,11 +43,5 @@ def submit():
     
     return redirect(url_for(resul,score=resu))
             
-
-
-
-
-
-
 if __name__ == '__main__':
     app.run(debug=True)
