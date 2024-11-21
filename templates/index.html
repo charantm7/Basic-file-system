@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File System Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+input, textarea {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+h3 {
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <br><h1>Welcome To Basic Computer Simulation</h1>
+    <div class="container">
+        <h1>File System Manager</h1>
+        <div>
+            <label for="filename">Filename:</label>
+            <input type="text" id="filename" placeholder="Enter filename">
+        </div>
+        <div>
+            <label for="filedata">Data:</label>
+            <textarea id="filedata" placeholder="Enter file data"></textarea>
+        </div>
+        <button id="writeBtn">Write File</button>
+        <button id="readBtn">Read File</button>
+
+        <h3 id="result">Result: </h3>
+    </div>
+    <script>
+        document.getElementById("readBtn").addEventListener("click", function() {
+    const filename = document.getElementById("filename").value;
+    fetch(`/read_file?filename=${filename}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("result").textContent = `Result: ${data.data || 'No data found'}`;
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+document.getElementById("writeBtn").addEventListener("click", function() {
+    const filename = document.getElementById("filename").value;
+    const data = document.getElementById("filedata").value;
+
+    fetch("/write_file", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ filename, data })
+    })
+    .then(response => response.json())
+    .then(result => {
+        document.getElementById("result").textContent = `Result: ${result.message}`;
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+    </script>
+</body>
+</html>
