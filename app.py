@@ -25,6 +25,9 @@ def write_file():
         fsm_manager.write_file(filename, data)
         return jsonify({"message": "File written successfully."})
     return jsonify({"error": "Invalid data"}), 400
+@app.route('/features')
+def features():
+    return render_template('features.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=8080)
