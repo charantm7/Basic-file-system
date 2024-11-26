@@ -23,6 +23,8 @@ def write_file():
     data = content.get('data')
     if filename and data:
         fsm_manager.write_file(filename, data)
+        with open (filename, 'a') as f:
+            f.write(data)
         return jsonify({"message": "File written successfully."})
     return jsonify({"error": "Invalid data"}), 400
 @app.route('/features')
